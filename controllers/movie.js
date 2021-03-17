@@ -2,7 +2,7 @@ const Movie = require('../models/movie');
 const { NotFoundError, ForbiddenError } = require('../errors/index');
 
 const getMovies = (req, res, next) => {
-  Movie.find({})
+  Movie.find({owner: req.user._id})
     .orFail(new NotFoundError('Фильмы не найдены'))
     .then((movies) => res.status(200).send(movies))
     .catch(next);
