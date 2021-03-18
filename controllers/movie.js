@@ -43,7 +43,7 @@ const createMovie = (req, res, next) => {
 
 const deleteMovie = (req, res, next) => {
   const { movieId } = req.params;
-  Movie.findById(movieId)
+  Movie.findById({owner: req.user._id, movieId})
     .select('+owner')
     .orFail(new NotFoundError('Фильм не найден'))
     .then((movie) => {
