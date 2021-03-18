@@ -48,7 +48,7 @@ const deleteMovie = (req, res, next) => {
     .orFail(new NotFoundError('Фильм не найден'))
     .then((movie) => {
       if (!movie.owner.equals(req.user._id)) return Promise.reject(new ForbiddenError('Нельзя удалить чужой фильм'));
-      return Movie.findByIdAndRemove(movieId);
+      return Movie.findByIdAndRemove({ owner: req.user._id, movieId });
     })
     .then((movie) => res.status(200).send({ message: `Фильм '${movie.nameRU}' удален` }))
     .catch(next);
